@@ -73,9 +73,8 @@ func newInteractive(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "term.html", gin.H{
 		"title":     "interactive terminal",
-		"path":      "/ws_new/" + id,
+		"path":      "/ws_new/" + sessions.Default(c).Get(userKey).(string),
 		"id":        id,
-		"user":      sessions.Default(c).Get(userKey).(string),
 		"logo":      "keyboard",
 		"csrfToken": csrf.Token(c.Request),
 	})

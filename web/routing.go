@@ -29,6 +29,9 @@ var options Options
 func StartWeb(opt *Options) {
 	options = *opt
 
+	// Set Gin to debug mode for detailed logging
+	gin.SetMode(gin.DebugMode)
+
 	if options.LogFile != nil {
 		gin.DefaultWriter = options.LogFile
 	}

@@ -389,7 +389,7 @@ func handlePlayer(w http.ResponseWriter, r *http.Request, name string, cmdline [
 
 	// not a good idea to put it here
 	// maybe put somewhere else
-	user := r.Header.Get("user")
+	user := name
 
 	if err := tc.createPty(user, cmdline); err != nil {
 		log.Println("Failed to create PTY: ", err)
