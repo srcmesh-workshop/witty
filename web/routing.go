@@ -74,7 +74,7 @@ func StartWeb(opt *Options) {
 
 	// create a new interactive session
 	g1.POST("/new", newInteractive)
-	g1.GET("/ws_new/:id", newTermConn)
+	g1.GET("/ws_new/:id/:user", newTermConn)
 
 	// create a viewer of an interactive session
 	g1.GET("/view/:id", viewPage)

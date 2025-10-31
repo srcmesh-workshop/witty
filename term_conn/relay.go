@@ -365,7 +365,7 @@ func (tc *TermConn) release() {
 }
 
 // handle websockets
-func handlePlayer(w http.ResponseWriter, r *http.Request, name string, cmdline []string) {
+func handlePlayer(w http.ResponseWriter, r *http.Request, name string, user string, cmdline []string) {
 	ws, err := upgrader.Upgrade(w, r, nil)
 
 	if err != nil {
@@ -429,9 +429,9 @@ func handleViewer(w http.ResponseWriter, r *http.Request, path string) {
 	}
 }
 
-func ConnectTerm(w http.ResponseWriter, r *http.Request, isViewer bool, name string, cmdline []string) {
+func ConnectTerm(w http.ResponseWriter, r *http.Request, isViewer bool, name string, user string, cmdline []string) {
 	if !isViewer {
-		handlePlayer(w, r, name, cmdline)
+		handlePlayer(w, r, name, user, cmdline)
 	} else {
 		handleViewer(w, r, name)
 	}

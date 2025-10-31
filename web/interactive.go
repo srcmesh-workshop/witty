@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"github.com/dchest/uniuri"
 	"github.com/gin-gonic/contrib/sessions"
 	"net/http"
@@ -82,14 +83,17 @@ func newInteractive(c *gin.Context) {
 
 func newTermConn(c *gin.Context) {
 	id := c.Param("id")
-	term_conn.ConnectTerm(c.Writer, c.Request, false, id, options.CmdToExec)
+	user := c.Param("user")
+	term_conn.ConnectTerm(c.Writer, c.Request, false, id, user, options.CmdToExec)
 }
 
 func viewPage(c *gin.Context) {
 	id := c.Param("id")
+	user := sessions.Default(c).Get("user")
+
 	c.HTML(http.StatusOK, "term.html", gin.H{
 		"title":     "viewer terminal",
-		"path":      "/ws_view/" + id,
+		"path":      fmt.Sprintf("/ws_view/%s/%s", id, user),
 		"id":        id,
 		"logo":      "view",
 		"csrfToken": csrf.Token(c.Request),
@@ -98,5 +102,5 @@ func viewPage(c *gin.Context) {
 
 func newViewWS(c *gin.Context) {
 	id := c.Param("id")
-	term_conn.ConnectTerm(c.Writer, c.Request, true, id, nil)
+	term_conn.ConnectTerm(c.Writer, c.Request, true, id, "", nil)
 }
