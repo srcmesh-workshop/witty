@@ -81,7 +81,7 @@ func (tc *TermConn) createPty(name string, cmdline []string) error {
 	// Create a shell command.
 	cmd := exec.Command(cmdline[0], cmdline[1:]...)
 	cmd.Env = os.Environ()
-	cmd.Env = append(cmd.Env, fmt.Sprintf("USER=%s", name))
+	cmd.Env = append(cmd.Env, fmt.Sprintf("LOGIN_USER=%s", name))
 
 	// Start the command with a pty.
 	ptmx, err := pty.Start(cmd)
