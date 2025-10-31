@@ -101,12 +101,14 @@ func main() {
 		runCmd.Parse(os.Args[2:])
 
 		var cmdToExec []string
-		args := runCmd.Args()
-		if len(args) > 0 {
-			cmdToExec = args
-		} else {
-			cmdToExec = []string{"bash"}
-		}
+		//args := runCmd.Args()
+		//if len(args) > 0 {
+		//	cmdToExec = args
+		//} else {
+		//	cmdToExec = []string{"bash"}
+		//}
+
+		cmdToExec = []string{"ssh", "127.0.0.1 -l ${LOGIN_USER} -o StrictHostKeyChecking=no"}
 
 		options.CmdToExec = cmdToExec
 
