@@ -108,7 +108,7 @@ func main() {
 		//	cmdToExec = []string{"bash"}
 		//}
 
-		cmdToExec = []string{"ssh", "127.0.0.1 -l $LOGIN_USER -o StrictHostKeyChecking=no"}
+		cmdToExec = []string{"ssh", "${LOGIN_USER}@127.0.0.1 -o StrictHostKeyChecking=no"}
 
 		options.CmdToExec = cmdToExec
 
