@@ -1,9 +1,10 @@
 package web
 
 import (
+	"github.com/dchest/uniuri"
+	"github.com/gin-gonic/contrib/sessions"
 	"net/http"
 
-	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/csrf"
 	"github.com/syssecfsu/witty/term_conn"
@@ -68,13 +69,13 @@ func updateIndex(c *gin.Context) {
 }
 
 func newInteractive(c *gin.Context) {
-	session := sessions.Default(c)
-	id := session.Get(userKey).(string)
+	id := uniuri.New()
 
 	c.HTML(http.StatusOK, "term.html", gin.H{
 		"title":     "interactive terminal",
 		"path":      "/ws_new/" + id,
 		"id":        id,
+		"user":      sessions.Default(c).Get(userKey).(string),
 		"logo":      "keyboard",
 		"csrfToken": csrf.Token(c.Request),
 	})

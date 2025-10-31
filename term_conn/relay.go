@@ -77,11 +77,11 @@ type WriteRecord struct {
 	Data []byte        `json:"Data"`
 }
 
-func (tc *TermConn) createPty(name string, cmdline []string) error {
+func (tc *TermConn) createPty(user string, cmdline []string) error {
 	// Create a shell command.
 	cmd := exec.Command(cmdline[0], cmdline[1:]...)
 	cmd.Env = os.Environ()
-	cmd.Env = append(cmd.Env, fmt.Sprintf("LOGIN_USER=%s", name))
+	cmd.Env = append(cmd.Env, fmt.Sprintf("LOGIN_USER=%s", user))
 
 	// Start the command with a pty.
 	ptmx, err := pty.Start(cmd)
@@ -387,7 +387,11 @@ func handlePlayer(w http.ResponseWriter, r *http.Request, name string, cmdline [
 	tc.viewChan = make(chan *websocket.Conn)
 	tc.recordChan = make(chan int)
 
-	if err := tc.createPty(name, cmdline); err != nil {
+	// not a good idea to put it here
+	// maybe put somewhere else
+	user := r.Header.Get("user")
+
+	if err := tc.createPty(user, cmdline); err != nil {
 		log.Println("Failed to create PTY: ", err)
 		return
 	}

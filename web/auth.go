@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/csrf"
-	"github.com/syssecfsu/witty/cmd"
 )
 
 const (
@@ -35,12 +34,19 @@ func login(c *gin.Context) {
 		return
 	}
 
-	// Check for username and password match, usually from a database
-	if !cmd.ValidateUser([]byte(username), []byte(passwd)) {
-		leftLoginMsg(c, "Username/password does not match")
+	// Check if username or password contains whitespace
+	if strings.ContainsAny(username, " \t\n\r") || strings.ContainsAny(passwd, " \t\n\r") {
+		leftLoginMsg(c, "Illegal user name or password")
 		c.Redirect(http.StatusSeeOther, "/login")
 		return
 	}
+
+	// Check for username and password match, usually from a database
+	//if !cmd.ValidateUser([]byte(username), []byte(passwd)) {
+	//	leftLoginMsg(c, "Username/password does not match")
+	//	c.Redirect(http.StatusSeeOther, "/login")
+	//	return
+	//}
 
 	// Save the username in the session
 	session.Set(userKey, username)
