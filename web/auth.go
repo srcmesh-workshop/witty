@@ -25,7 +25,7 @@ func login(c *gin.Context) {
 	username := c.PostForm("username")
 	passwd := c.PostForm("passwd")
 
-	if passwd != "srcmesh123456789" {
+	if passwd != "srcmesh-123456789" {
 		leftLoginMsg(c, "Illegal user name or password")
 		c.Redirect(http.StatusSeeOther, "/login")
 		return
