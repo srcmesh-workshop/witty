@@ -78,7 +78,7 @@ func StartWeb(opt *Options) {
 
 	// create a viewer of an interactive session
 	g1.GET("/view/:id", viewPage)
-	g1.GET("/ws_view/:id", newViewWS)
+	g1.GET("/ws_view/:id/:user", newViewWS)
 
 	// start/stop recording the session
 	g1.POST("/record/:id", startRecord)
