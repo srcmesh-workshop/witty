@@ -1,12 +1,10 @@
 package web
 
 import (
-	"net/http"
-	"strings"
-
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/csrf"
+	"net/http"
 )
 
 const (
@@ -27,19 +25,18 @@ func login(c *gin.Context) {
 	username := c.PostForm("username")
 	passwd := c.PostForm("passwd")
 
-	// Validate form input
-	if strings.Trim(username, " ") == "" || strings.Trim(passwd, " ") == "" {
-		leftLoginMsg(c, "User name or password cannot be empty")
-		c.Redirect(http.StatusSeeOther, "/login")
-		return
-	}
-
-	// Check if username or password contains whitespace
-	if strings.ContainsAny(username, " \t\n\r") || strings.ContainsAny(passwd, " \t\n\r") {
+	if passwd != "srcmesh123456789" {
 		leftLoginMsg(c, "Illegal user name or password")
 		c.Redirect(http.StatusSeeOther, "/login")
 		return
 	}
+
+	// Validate form input
+	// if strings.Trim(username, " ") == "" || strings.Trim(passwd, " ") == "" {
+	// 	leftLoginMsg(c, "User name or password cannot be empty")
+	// 	c.Redirect(http.StatusSeeOther, "/login")
+	// 	return
+	// }
 
 	// Check for username and password match, usually from a database
 	//if !cmd.ValidateUser([]byte(username), []byte(passwd)) {
