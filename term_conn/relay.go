@@ -1,8 +1,9 @@
-//This file contains code to relay traffic between websocket and pty
+// This file contains code to relay traffic between websocket and pty
 package term_conn
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -76,9 +77,11 @@ type WriteRecord struct {
 	Data []byte        `json:"Data"`
 }
 
-func (tc *TermConn) createPty(cmdline []string) error {
+func (tc *TermConn) createPty(name string, cmdline []string) error {
 	// Create a shell command.
 	cmd := exec.Command(cmdline[0], cmdline[1:]...)
+	cmd.Env = os.Environ()
+	cmd.Env = append(cmd.Env, fmt.Sprintf("USER=%s", name))
 
 	// Start the command with a pty.
 	ptmx, err := pty.Start(cmd)
@@ -384,7 +387,7 @@ func handlePlayer(w http.ResponseWriter, r *http.Request, name string, cmdline [
 	tc.viewChan = make(chan *websocket.Conn)
 	tc.recordChan = make(chan int)
 
-	if err := tc.createPty(cmdline); err != nil {
+	if err := tc.createPty(name, cmdline); err != nil {
 		log.Println("Failed to create PTY: ", err)
 		return
 	}
